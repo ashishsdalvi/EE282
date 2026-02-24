@@ -66,7 +66,7 @@ The output shows that the file was downloaded properly. Additionally we get the 
 33778, start and stop codon are 30922 and 30862, mRNA is 30836, gene is 17872, ncRNA is 3059, miRNA is 485, pseudogene is 365, tRNA is 312, snoRNA is 270, pre-miRNA is 262,
 rRNA is 115, snRNA is 32. 
 
-For the genes per chromosome arm 2L is 2508, 2R is 3649, 3L is 3481, 3R is 4226, 4 is 115, X is 2704, and Y is 113. 
+For the genes per chromosome arm 2L is 3508, 2R is 3649, 3L is 3481, 3R is 4226, 4 is 114, X is 2704, and Y is 113. 
 
 
 NOTE: we downloaded using 
@@ -75,3 +75,4 @@ NOTE: we downloaded using
 wget https://s3ftp.flybase.org/genomes/Drosophila_melanogaster/dmel_r6.66_FB2025_05/fasta/dmel-all-chromosome-r6.66.fasta.gz
 wget https://s3ftp.flybase.org/genomes/Drosophila_melanogaster/dmel_r6.66_FB2025_05/gtf/dmel-all-r6.66.gtf.gz
 ```
+
