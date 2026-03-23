@@ -1,15 +1,15 @@
 ## Introduction
 
-Clonal hematopoiesis of indeterminate potential (CHIP) is an age-related phenomenon where hematopoietic stem cells (HSCs) acquire mutations that confer a fitness advantage while leading to an increased risk of cardiovascular disorders and cancer (Verdonschot et al. 2023). This condition has several known driver mutations such as TET2, the focus of this project, and DNMT3A (Campbell et al. 2022). Recently there have been studies that investigate how CHIP and high fat diets in mice contribute to disease but more research must be done to elucidate the mechanism. In this project we focus on how CHIP in conjunction with a western diet (WD) in mice influences hepatocellular carcinoma (HCC) using single cell sequencing data. In particular we will characterize some of the cellular processes and patterns seen in CHIP related HCC. This project aims to get a better understanding of how this phenomenon occurs in mice to get actionable insights for humans. In this project we will specifically focus on some fundamental analyses including a breakdown of the different cell types in the data as well as what CD8+ T cells, a type of T cell with cytotoxic activity, is doing.
+Clonal hematopoiesis of indeterminate potential (CHIP) is an age-related phenomenon where hematopoietic stem cells (HSCs) acquire mutations that confer a fitness advantage while leading to an increased risk of cardiovascular disorders and cancer (Sikking et al. 2023). This condition has several known driver mutations such as TET2, the focus of this project, and DNMT3A (Mitchell et al. 2022). Recently there have been studies that investigate how CHIP and high fat diets in mice contribute to disease but more research must be done to elucidate the mechanism (Wong et al. 2023). In this project we focus on how CHIP in conjunction with a western diet (WD) in mice influences hepatocellular carcinoma (HCC) using single cell sequencing data. In particular we will characterize some of the cellular processes and patterns seen in CHIP related HCC. This project aims to get a better understanding of how this phenomenon occurs in mice to get actionable insights for humans. In this project we will specifically focus on some fundamental analyses including a breakdown of the different cell types in the data as well as what CD8+ T cells, a type of T cell with cytotoxic activity, is doing.
 
 
 ## Methods
 
-The main data we analyze is single-cell RNA-seq data for 4 different conditions of mice: tet2 knockout (KO) mice on normal diet, tet2 KO mice on western diet, wildtype mice on normal diet, and wildtype mice on western diet. In total there are 16 mice with 4 mice for each of these conditions. Each of these mice also have scores from 0-6 to measure the degree of HCC severity as measured by a clinician collaborator. To analyze the data we first begin with preprocessing the data and preparing for clustering and cell type annotation. The preprocessing, clustering, and cell type annotation was conducted in a Jupyter notebook called "clustering_and_analysis.ipynb" in a Python environment with Scanpy, NumPy, Pandas, and several other packages. In the preprocessing steps we removed cells with fewer than 1000 unique genes and cells with more than 10% expression of mitochondrial genes. We then normalized to 10,000 counts per cell and performed a log1p transformation on counts. We then conducted PCA and computed neighbors and calculated and visualized a UMAP. We colored the UMAP by mouse sample ID to check for batch effects, of which there did not appear to be any. Following this we moved onto cell type annotation which we did using a liver single cell atlas for NAFLD mice (Guilliams et al. 2022). The goal was to build a logistic regression classifier using the transcriptomic profiles and cell type labels in this reference dataset and run it on our own data. This required first subsetting the genes in the reference to match those in our data and performing normalization and a log1p transform on the counts. An 80/20 train and test split was used and a ROC plot was generated to measure classifier performance. The model was then run on our dataset and predictions were saved in an anndata object for downstream analyses.
+The main data we analyze is single-cell RNA-seq data for 4 different conditions of mice: tet2 knockout (KO) mice on normal diet, tet2 KO mice on western diet, wildtype mice on normal diet, and wildtype mice on western diet. In total there are 16 mice with 4 mice for each of these conditions. Each of these mice also have scores from 0-6 to measure the degree of HCC severity as measured by a clinician collaborator. To analyze the data we first begin with preprocessing the data and preparing for clustering and cell type annotation. The preprocessing, clustering, and cell type annotation was conducted in a Jupyter notebook called "clustering_and_analysis.ipynb" in a Python environment with Scanpy, NumPy, Pandas, and several other packages (Wolf et al. 2018; Harris et al. 2020; McKinney 2010). In the preprocessing steps we removed cells with fewer than 1000 unique genes and cells with more than 10% expression of mitochondrial genes. We then normalized to 10,000 counts per cell and performed a log1p transformation on counts. We then conducted PCA and computed neighbors and calculated and visualized a UMAP. We colored the UMAP by mouse sample ID to check for batch effects, of which there did not appear to be any. Following this we moved onto cell type annotation which we did using a liver single cell atlas for NAFLD mice (Guilliams et al. 2022). The goal was to build a logistic regression classifier using the transcriptomic profiles and cell type labels in this reference dataset and run it on our own data (Domínguez Conde et al. 2022). This required first subsetting the genes in the reference to match those in our data and performing normalization and a log1p transform on the counts. An 80/20 train and test split was used and a ROC plot was generated to measure classifier performance. The model was then run on our dataset and predictions were saved in an anndata object for downstream analyses.
 
-The first analysis conducted was to determine whether there were differences in the proportions of cell types amongst the 4 different experimental conditions. A Wilcoxon rank sum test with FDR correction was used for pairwise comparisons. The code is in a Jupyter notebook called "cell_type_proportion_analysis.ipynb".
+The first analysis conducted was to determine whether there were differences in the proportions of cell types amongst the 4 different experimental conditions. A Wilcoxon rank sum test with FDR correction was used for pairwise comparisons (Virtanen et al. 2020). The code is in a Jupyter notebook called "cell_type_proportion_analysis.ipynb".
 
-The second analysis conducted was single sample gene set enrichment analysis (ssGSEA) to analyze the activity of CD8+ T cells. Marker genes from Masopust et al. 2025 were used to score pre-exhaustion, intermediate exhaustion, and terminal exhaustion states in CD8+ T cells. The ssGSEA function from the R package GSVA was used to compute these scores. Finally, a Spearman correlation was computed between per-sample average terminal exhaustion scores and clinical HCC severity scores to assess the relationship between CTL exhaustion and tumor severity.
+The second analysis conducted was single sample gene set enrichment analysis (ssGSEA) to analyze the activity of CD8+ T cells. Marker genes from Masopust et al. 2025 were used to score pre-exhaustion, intermediate exhaustion, and terminal exhaustion states in CD8+ T cells. The ssGSEA function from the R package GSVA was used to compute these scores (Hänzelmann et al. 2013). Finally, a Spearman correlation was computed between per-sample average terminal exhaustion scores and clinical HCC severity scores to assess the relationship between CTL exhaustion and tumor severity. In this R environment we used GSVA as mentioned previosuly but also Seurat and ggplot2 for data processing and plotting purposes (Hao et al. 2023; Wickham 2016).  
 
 
 ## Results
@@ -58,12 +58,65 @@ Based on the cell type proportions of the 4 different conditions there appears t
 
 ## References
 
-Barsch M, Salié H, Schlaak AE, Zhang Z, Hess M, Mayer LS, Tauber C, Otto-Mora P, Ohtani T, Nilsson T, Wischer L, Schabel E, Grimm M, Bartsch O, Bengsch B. 2022. T-cell exhaustion and residency dynamics inform clinical outcomes in hepatocellular carcinoma. J Hepatol 77: 397–409.
+Barsch M, Salié H, Schlaak AE, Zhang Z, Hess M, Mayer LS, Tauber C,
+Otto-Mora P, Ohtani T, Nilsson T, Wischer L, Schabel E, Grimm M,
+Bartsch O, Bengsch B. 2022. T-cell exhaustion and residency dynamics
+inform clinical outcomes in hepatocellular carcinoma. J Hepatol 77:
+397–409.
 
-Guilliams M, Bonnardel J, Haest B, Vanderborght B, Wagner C, Remmerie A, Bujko A, Martens L, Thoné T, Browaeys R, De Ponti FF, Vanneste B, Zwicker C, Svedberg FR, Vanhalewyn T, Gonçalves A, Lippens S, Devriendt B, Cox E, Scott CL. 2022. Spatial proteogenomics reveals distinct and evolutionarily conserved hepatic macrophage niches. Cell 185: 379–396.
+Domínguez Conde C, Xu C, Jarvis LB, Rainbow DB, Wells SB, Gomes T,
+Howlett SK, Suchanek O, Polanski K, King HW, et al. 2022. Cross-tissue
+immune cell analysis reveals tissue-specific features in humans.
+Science 376: eabl5197.
 
-Masopust D, Soerens AG, Quarnstrom CF, Ahmed R. 2025. T cell nomenclature: from subsets to modules. Nature Reviews Immunology. doi:10.1038/s41577-025-01246-2.
+Guilliams M, Bonnardel J, Haest B, Vanderborght B, Wagner C,
+Remmerie A, Bujko A, Martens L, Thoné T, Browaeys R, De Ponti FF,
+Vanneste B, Zwicker C, Svedberg FR, Vanhalewyn T, Gonçalves A,
+Lippens S, Devriendt B, Cox E, Scott CL. 2022. Spatial proteogenomics
+reveals distinct and evolutionarily conserved hepatic macrophage
+niches. Cell 185: 379–396.
 
-Mitchell E, Spencer Chapman M, Williams N, et al. 2022. Clonal dynamics of haematopoiesis across the human lifespan. Nature 606: 343–350.
+Hänzelmann S, Castelo R, Guinney J. 2013. GSVA: gene set variation
+analysis for microarray and RNA-seq data. BMC Bioinformatics 14: 7.
 
-Sikking MA, Stroeks SLVM, Waring OJ, Henkens MTHM, Riksen NP, Hoischen A, Heymans SRB, Verdonschot JAJ. 2023. Clonal hematopoiesis of indeterminate potential from a heart failure specialist's point of view. J Am Heart Assoc 12: e030603.
+Hao Y, Stuart T, Kowalski MH, Choudhary S, Hoffman P, Hartman A,
+Srivastava A, Molla G, Madad S, Fernandez-Granda C, Satija R. 2024.
+Dictionary learning for integrative, multimodal and scalable
+single-cell analysis. Nat Biotechnol 42: 293–304.
+
+Harris CR, Millman KJ, van der Walt SJ, Gommers R, Virtanen P,
+Cournapeau D, Wieser E, Taylor J, Berg S, Smith NJ, et al. 2020.
+Array programming with NumPy. Nature 585: 357–362.
+
+Masopust D, Soerens AG, Quarnstrom CF, Ahmed R. 2025. T cell
+nomenclature: from subsets to modules. Nature Reviews Immunology.
+doi:10.1038/s41577-025-01246-2.
+
+McKinney W. 2010. Data structures for statistical computing in Python.
+Proceedings of the 9th Python in Science Conference 445: 51–56.
+
+Mitchell E, Spencer Chapman M, Williams N, et al. 2022. Clonal
+dynamics of haematopoiesis across the human lifespan. Nature 606:
+343–350.
+
+Sikking MA, Stroeks SLVM, Waring OJ, Henkens MTHM, Riksen NP,
+Hoischen A, Heymans SRB, Verdonschot JAJ. 2023. Clonal hematopoiesis
+of indeterminate potential from a heart failure specialist's point of
+view. J Am Heart Assoc 12: e030603.
+
+Virtanen P, Gommers R, Oliphant TE, Haberland M, Reddy T,
+Cournapeau D, Burovski E, Peterson P, Weckesser W, Bright J, et al.
+2020. SciPy 1.0: fundamental algorithms for scientific computing
+in Python. Nat Methods 17: 261–272.
+
+Wickham H. 2016. ggplot2: Elegant Graphics for Data Analysis.
+Springer, New York.
+
+Wolf FA, Angerer P, Theis FJ. 2018. SCANPY: large-scale single-cell
+gene expression data analysis. Genome Biol 19: 15.
+
+Wong WJ, Emdin C, Bick AG, Zekavat SM, Niroula A, Pirruccello JP,
+Dichtel L, Griffin G, Uddin MM, Gibson CJ, Kovalcik V, Lin AE,
+McConkey ME, Vromman A, Sellar RS, Kim PG, Agrawal M, Weinstock J,
+Long MT, Yu B, et al. 2023. Clonal haematopoiesis and risk of chronic
+liver disease. Nature 616: 747–754.
