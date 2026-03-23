@@ -20,7 +20,7 @@ After QC we will normalize the expression data for cells to a total of 10,000 re
 
 The next step is to do cell type annotation. Here we will use CellTypist, a linear regression model that uses feature selection and train and test on an 80/20 split using the mentioned atlas dataset (Dominguez Conde et al. 2022). Once the model is trained and the performance is evaluated we will run it on our data to annotate each of the cells. 
 
-After annotating our cell types we can conduct statistical analyses to see if there are any statistically significant differences between the cell type proportions for any of the cell types across the 4 experimental conditions. This pairwise statistical analysis can be done using ggplot in R (Wickham 2016). We can also use gene ontology analysis by calculating the highly variable genes for the cells and then using the AUCell and ssGSEA tools along with the previously mentioned Bader lab gene sets to determine the scores for all biological pathways in all the cells. The last type of analysis we can do is doing more specific cell type labeling to label the specific states such as exhaustion for CD8+ T cells or senescence. We can then do correlational analysis using scipy.stats to see which of these cell states/pathways correlate with increased HCC score. 
+After annotating our cell types we can conduct statistical analyses to see if there are any statistically significant differences between the cell type proportions for any of the cell types across the 4 experimental conditions. This pairwise statistical analysis can be done using ggplot in R (Wickham 2016). We can also use gene ontology analysis by calculating the highly variable genes for the cells and then using the AUCell and ssGSEA tools along with the previously mentioned Bader lab gene sets to determine the scores for all biological pathways in all the cells (Hanzelmann et al. 2013). The last type of analysis we can do is doing more specific cell type labeling to label the specific states such as exhaustion for CD8+ T cells or senescence. We can then do correlational analysis using scipy.stats to see which of these cell states/pathways correlate with increased HCC score (Virtanen et al. 2020). 
 
 
 ## Visualizations
@@ -37,12 +37,44 @@ Overall the proposed steps are relatively standard and can always be tweaked as 
 
 ## References
 
-Guilliams M, Bonnardel J, Haest B, Daems B, Eguchi C, Gola A, Scott CL. 2022. Spatial proteogenomics reveals distinct and evolutionarily conserved hepatic macrophage niches. Cell 185: 379–396. 
+Domínguez Conde C, Xu C, Jarvis LB, Rainbow DB, Wells SB, Gomes T,
+Howlett SK, Suchanek O, Polanski K, King HW, et al. 2022. Cross-tissue
+immune cell analysis reveals tissue-specific features in humans.
+Science 376: eabl5197.
 
-Wolf FA, Angerer P, Theis FJ. 2018. SCANPY: large-scale single-cell gene expression data analysis. Genome Biology 19: 15. 
+Guilliams M, Bonnardel J, Haest B, Vanderborght B, Wagner C,
+Remmerie A, Bujko A, Martens L, Thoné T, Browaeys R, De Ponti FF,
+Vanneste B, Zwicker C, Svedberg FR, Vanhalewyn T, Gonçalves A,
+Lippens S, Devriendt B, Cox E, Scott CL. 2022. Spatial proteogenomics
+reveals distinct and evolutionarily conserved hepatic macrophage
+niches. Cell 185: 379–396.
 
-Domínguez Conde C, Xu C, Garcia-Alonso L, Pembroke J, Tan S, Itzkovitz S, Teichmann SA. 2022. Cross-tissue immune cell analysis reveals tissue-specific features in humans. Science 375: eabl5197.
+Hänzelmann S, Castelo R, Guinney J. 2013. GSVA: gene set variation
+analysis for microarray and RNA-seq data. BMC Bioinformatics 14: 7.
 
-Aibar S, González-Blas CB, Moerman T, Huynh-Thu VA, Imrichova H, Hulselmans G, Aerts S. 2017. SCENIC: single-cell regulatory network inference and clustering. Nature Methods 14: 1083–1086.
+Marnell CS, Bick A, Natarajan P. 2022. Clonal hematopoiesis of
+indeterminate potential (CHIP): linking somatic mutations,
+hematopoiesis, chronic inflammation and cardiovascular disease.
+J Mol Cell Cardiol 161: 98–105.
 
-Wickham H. 2016. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York.
+Sikking MA, Stroeks SLVM, Waring OJ, Henkens MTHM, Riksen NP,
+Hoischen A, Heymans SRB, Verdonschot JAJ. 2023. Clonal hematopoiesis
+of indeterminate potential from a heart failure specialist's point of
+view. J Am Heart Assoc 12: e030603.
+
+Virtanen P, Gommers R, Oliphant TE, Haberland M, Reddy T,
+Cournapeau D, Burovski E, Peterson P, Weckesser W, Bright J, et al.
+2020. SciPy 1.0: fundamental algorithms for scientific computing
+in Python. Nat Methods 17: 261–272.
+
+Wickham H. 2016. ggplot2: Elegant Graphics for Data Analysis.
+Springer, New York.
+
+Wolf FA, Angerer P, Theis FJ. 2018. SCANPY: large-scale single-cell
+gene expression data analysis. Genome Biol 19: 15.
+
+Wong WJ, Emdin C, Bick AG, Zekavat SM, Niroula A, Pirruccello JP,
+Dichtel L, Griffin G, Uddin MM, Gibson CJ, Kovalcik V, Lin AE,
+McConkey ME, Vromman A, Sellar RS, Kim PG, Agrawal M, Weinstock J,
+Long MT, Yu B, et al. 2023. Clonal haematopoiesis and risk of chronic
+liver disease. Nature 616: 747–754.
