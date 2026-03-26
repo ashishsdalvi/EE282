@@ -1,0 +1,7 @@
+data/raw/
+data/processed/*.fasta
+data/processed/*.fa
+*.gfa
+*.noseq
+*.bin
+tmp/
